@@ -1,6 +1,29 @@
 import type { BundledLanguage, Highlighter, SpecialLanguage, ThemedToken } from "shiki"
 
-export type ShikiThemeChoice = "light" | "dark"
+export type ShikiThemeChoice =
+  | "github-light"
+  | "github-dark"
+  | "nord"
+  | "one-dark-pro"
+  | "vitesse-dark"
+  | "vitesse-light"
+
+export const AVAILABLE_THEMES: readonly ShikiThemeChoice[] = [
+  "github-light",
+  "github-dark",
+  "nord",
+  "one-dark-pro",
+  "vitesse-dark",
+  "vitesse-light",
+] as const
+
+/**
+ * Determine if a Shiki theme is light or dark for rendering purposes.
+ */
+export function getThemeVariant(theme: ShikiThemeChoice): "light" | "dark" {
+  const lightThemes: ShikiThemeChoice[] = ["github-light", "vitesse-light"]
+  return lightThemes.includes(theme) ? "light" : "dark"
+}
 
 export type TokenLine = {
   tokens: { content: string; color: string }[]
@@ -13,7 +36,7 @@ async function getHighlighterOnce() {
     highlighterPromise = (async () => {
       const shiki = await import("shiki")
       return await shiki.createHighlighter({
-        themes: ["github-light", "github-dark"],
+        themes: ["github-light", "github-dark","nord","one-dark-pro", "vitesse-dark", "vitesse-light"],
         langs: [
           "javascript",
           "typescript",
@@ -49,8 +72,9 @@ export async function shikiTokenizeToLines(opts: {
 }): Promise<{ lines: TokenLine[]; bg: string }> {
   const highlighter = await getHighlighterOnce()
 
-  const themeName = opts.theme === "dark" ? "github-dark" : "github-light"
+  const themeName = opts.theme
   const lang = normalizeLang(opts.lang)
+  const variant = getThemeVariant(opts.theme)
 
   const langToken =
     lang === "text" ? ("text" as SpecialLanguage) : (lang as BundledLanguage)
@@ -64,11 +88,11 @@ export async function shikiTokenizeToLines(opts: {
   const lines: TokenLine[] = themed.tokens.map((line: ThemedToken[]) => ({
     tokens: line.map((t) => ({
       content: t.content,
-      color: t.color || (opts.theme === "dark" ? "#e5e7eb" : "#111827"),
+      color: t.color || (variant === "dark" ? "#e5e7eb" : "#111827"),
     })),
   }))
 
-  const bg = themed.bg || (opts.theme === "dark" ? "#0b1021" : "#ffffff")
+  const bg = themed.bg || (variant === "dark" ? "#0b1021" : "#ffffff")
   return { lines, bg }
 }
 

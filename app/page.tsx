@@ -7,7 +7,7 @@ import { drawCodeFrame } from "./lib/magicMove/canvasRenderer"
 import { calculateCanvasHeight, layoutTokenLinesToCanvas, makeDefaultLayoutConfig } from "./lib/magicMove/codeLayout"
 import type { LayoutResult } from "./lib/magicMove/codeLayout"
 import { parseMagicMove } from "./lib/magicMove/parseMagicMove"
-import { shikiTokenizeToLines } from "./lib/magicMove/shikiHighlighter"
+import { AVAILABLE_THEMES, getThemeVariant, shikiTokenizeToLines, type ShikiThemeChoice } from "./lib/magicMove/shikiHighlighter"
 import { recordCanvasToWebm } from "./lib/video/recordCanvas"
 
 type StepLayout = {
@@ -142,7 +142,7 @@ WHERE t.name = 'postgres';
   );
 
   const [input, setInput] = useState<string>(defaultInput);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<ShikiThemeChoice>("github-dark");
   const [fps, setFps] = useState<number>(30);
   const [transitionMs, setTransitionMs] = useState<number>(800);
   const [forceLineNumbers, setForceLineNumbers] = useState<boolean>(false);
@@ -213,7 +213,7 @@ WHERE t.name = 'postgres';
           ctx,
           tokenLines: lines,
           bg,
-          theme,
+          theme: getThemeVariant(theme),
           config: cfg,
         });
 
@@ -271,7 +271,7 @@ WHERE t.name = 'postgres';
           ctx,
           config: cfg,
           layout: only.layout,
-          theme,
+          theme: getThemeVariant(theme),
           showLineNumbers: only.showLineNumbers,
           startLine: only.startLine,
           lineCount: only.tokenLineCount,
@@ -286,7 +286,7 @@ WHERE t.name = 'postgres';
           ctx,
           config: cfg,
           layout: first.layout,
-          theme,
+          theme: getThemeVariant(theme),
           showLineNumbers: first.showLineNumbers,
           startLine: first.startLine,
           lineCount: first.tokenLineCount,
@@ -306,7 +306,7 @@ WHERE t.name = 'postgres';
             ctx,
             config: cfg,
             layout: b.layout,
-            theme,
+            theme: getThemeVariant(theme),
             tokens: animated,
             showLineNumbers: a.showLineNumbers || b.showLineNumbers,
             startLine: b.startLine,
@@ -321,7 +321,7 @@ WHERE t.name = 'postgres';
             ctx,
             config: cfg,
             layout: b.layout,
-            theme,
+            theme: getThemeVariant(theme),
             showLineNumbers: b.showLineNumbers,
             startLine: b.startLine,
             lineCount: b.tokenLineCount,
@@ -336,7 +336,7 @@ WHERE t.name = 'postgres';
         ctx,
         config: cfg,
         layout: last.layout,
-        theme,
+        theme: getThemeVariant(theme),
         showLineNumbers: last.showLineNumbers,
         startLine: last.startLine,
         lineCount: last.tokenLineCount,
@@ -556,10 +556,18 @@ WHERE t.name = 'postgres';
                 <select
                   className="rounded-md border border-black/10 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-white/10 dark:bg-white/5 dark:text-zinc-50"
                   value={theme}
-                  onChange={(e) => setTheme(e.target.value as "light" | "dark")}
+                  onChange={(e) => setTheme(e.target.value as ShikiThemeChoice)}
                 >
-                  <option value="dark">Dark</option>
-                  <option value="light">Light</option>
+                  {AVAILABLE_THEMES.map((t) => (
+                    <option key={t} value={t}>
+                      {t === "github-light" ? "GitHub Light" :
+                        t === "github-dark" ? "GitHub Dark" :
+                          t === "nord" ? "Nord" :
+                            t === "one-dark-pro" ? "One Dark Pro" :
+                              t === "vitesse-dark" ? "Vitesse Dark" :
+                                t === "vitesse-light" ? "Vitesse Light" : t}
+                    </option>
+                  ))}
                 </select>
               </label>
 
