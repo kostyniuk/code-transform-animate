@@ -21,7 +21,7 @@
         "next": "16.1.1",
         "react": "19.2.3",
         "react-dom": "19.2.3",
-        "react-resizable-panels": "^2.0.9",
+        "react-resizable-panels": "^2.1.7",
         "shiki": "1",
         "tailwind-merge": "^3.4.0",
       },
