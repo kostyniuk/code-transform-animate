@@ -33,6 +33,9 @@ export default function Home() {
   const [theme, setTheme] = useState<ShikiThemeChoice>("vitesse-dark");
   const [fps, setFps] = useState<number>(60);
   const [transitionMs, setTransitionMs] = useState<number>(800);
+  const [startHoldMs, setStartHoldMs] = useState<number>(250);
+  const [betweenHoldMs, setBetweenHoldMs] = useState<number>(120);
+  const [endHoldMs, setEndHoldMs] = useState<number>(250);
 
   // Compute steps from simple mode
   const steps = useMemo<MagicMoveStep[]>(() => {
@@ -61,14 +64,14 @@ export default function Home() {
 
   const timeline = useMemo(() => {
     const stepCount = steps.length;
-    const startHold = 250;
-    const betweenHold = 120;
-    const endHold = 250;
+    const startHold = startHoldMs;
+    const betweenHold = betweenHoldMs;
+    const endHold = endHoldMs;
     if (stepCount <= 1) return { totalMs: startHold + endHold, startHold, betweenHold, endHold };
     const transitions = stepCount - 1;
     const totalMs = startHold + transitions * transitionMs + transitions * betweenHold + endHold;
     return { totalMs, startHold, betweenHold, endHold };
-  }, [steps.length, transitionMs]);
+  }, [steps.length, transitionMs, startHoldMs, betweenHoldMs, endHoldMs]);
 
   useEffect(() => {
     let cancelled = false;
@@ -126,7 +129,7 @@ export default function Home() {
       URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(null);
     }
-  }, [steps, theme, fps, transitionMs]); // Only those that affect the video content
+  }, [steps, theme, fps, transitionMs, startHoldMs, betweenHoldMs, endHoldMs]); // Only those that affect the video content
 
   const renderAt = useCallback(
     (ms: number) => {
@@ -392,6 +395,12 @@ export default function Home() {
           onStartLineChange={setSimpleStartLine}
           fps={fps}
           onFpsChange={setFps}
+          startHoldMs={startHoldMs}
+          onStartHoldMsChange={setStartHoldMs}
+          betweenHoldMs={betweenHoldMs}
+          onBetweenHoldMsChange={setBetweenHoldMs}
+          endHoldMs={endHoldMs}
+          onEndHoldMsChange={setEndHoldMs}
           onAddStep={addSimpleStep}
           onRemoveStep={removeSimpleStep}
           onUpdateStep={updateSimpleStep}

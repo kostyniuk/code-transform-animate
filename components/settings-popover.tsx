@@ -13,6 +13,12 @@ interface SettingsPopoverProps {
   onStartLineChange: (value: number) => void;
   fps: number;
   onFpsChange: (value: number) => void;
+  startHoldMs: number;
+  onStartHoldMsChange: (value: number) => void;
+  betweenHoldMs: number;
+  onBetweenHoldMsChange: (value: number) => void;
+  endHoldMs: number;
+  onEndHoldMsChange: (value: number) => void;
 }
 
 export function SettingsPopover({
@@ -22,6 +28,12 @@ export function SettingsPopover({
   onStartLineChange,
   fps,
   onFpsChange,
+  startHoldMs,
+  onStartHoldMsChange,
+  betweenHoldMs,
+  onBetweenHoldMsChange,
+  endHoldMs,
+  onEndHoldMsChange,
 }: SettingsPopoverProps) {
   return (
     <div className="space-y-4">
@@ -63,6 +75,55 @@ export function SettingsPopover({
           step={5}
           onValueChange={([v]) => onFpsChange(v)}
         />
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4 pt-1">
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Timing (ms)</Label>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <Label className="text-xs">Start Rest: {startHoldMs}ms</Label>
+            </div>
+            <Slider
+              value={[startHoldMs]}
+              min={0}
+              max={2000}
+              step={50}
+              onValueChange={([v]) => onStartHoldMsChange(v)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <Label className="text-xs">Between Rest: {betweenHoldMs}ms</Label>
+            </div>
+            <Slider
+              value={[betweenHoldMs]}
+              min={0}
+              max={2000}
+              step={50}
+              onValueChange={([v]) => onBetweenHoldMsChange(v)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <Label className="text-xs">End Rest: {endHoldMs}ms</Label>
+            </div>
+            <Slider
+              value={[endHoldMs]}
+              min={0}
+              max={2000}
+              step={50}
+              onValueChange={([v]) => onEndHoldMsChange(v)}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

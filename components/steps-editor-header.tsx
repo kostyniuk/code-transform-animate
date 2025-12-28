@@ -20,6 +20,12 @@ interface StepsEditorHeaderProps {
   onStartLineChange: (value: number) => void;
   fps: number;
   onFpsChange: (value: number) => void;
+  startHoldMs: number;
+  onStartHoldMsChange: (value: number) => void;
+  betweenHoldMs: number;
+  onBetweenHoldMsChange: (value: number) => void;
+  endHoldMs: number;
+  onEndHoldMsChange: (value: number) => void;
   onAddStep: () => void;
 }
 
@@ -35,6 +41,12 @@ export function StepsEditorHeader({
   onStartLineChange,
   fps,
   onFpsChange,
+  startHoldMs,
+  onStartHoldMsChange,
+  betweenHoldMs,
+  onBetweenHoldMsChange,
+  endHoldMs,
+  onEndHoldMsChange,
   onAddStep,
 }: StepsEditorHeaderProps) {
   return (
@@ -93,6 +105,12 @@ export function StepsEditorHeader({
               onStartLineChange={onStartLineChange}
               fps={fps}
               onFpsChange={onFpsChange}
+              startHoldMs={startHoldMs}
+              onStartHoldMsChange={onStartHoldMsChange}
+              betweenHoldMs={betweenHoldMs}
+              onBetweenHoldMsChange={onBetweenHoldMsChange}
+              endHoldMs={endHoldMs}
+              onEndHoldMsChange={onEndHoldMsChange}
             />
           </PopoverContent>
         </Popover>
