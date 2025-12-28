@@ -13,7 +13,6 @@ import { convertWebmToMp4, terminateFFmpeg } from "./lib/video/converter"
 import { DEFAULT_STEPS } from "./lib/constants"
 
 import { ResizableHandle, ResizablePanelGroup } from "@/components/ui/resizable"
-import { Header } from "@/components/header"
 import { StepsEditor } from "@/components/steps-editor"
 import { PreviewPanel } from "@/components/preview-panel"
 
@@ -380,8 +379,6 @@ export default function Home() {
 
   return (
     <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden">
-      <Header />
-
       <ResizablePanelGroup direction="horizontal" className="flex-1 w-full max-w-full">
         <StepsEditor
           steps={simpleSteps}
