@@ -49,8 +49,11 @@ export function PlayerControls({
           }}
         >
           <div
-            className="absolute inset-y-0 left-0 bg-primary transition-all duration-75 ease-linear"
-            style={{ width: `${(playheadMs / Math.max(1, totalMs)) * 100}%` }}
+            className="absolute inset-y-0 left-0 bg-primary"
+            style={{
+              width: `${(playheadMs / Math.max(1, totalMs)) * 100}%`,
+              willChange: "width"
+            }}
           />
         </div>
       </div>
