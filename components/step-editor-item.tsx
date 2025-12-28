@@ -1,9 +1,10 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { CodeEditor } from "./code-editor";
+import type { ShikiThemeChoice } from "@/app/lib/magicMove/shikiHighlighter";
 
 interface StepEditorItemProps {
   index: number;
@@ -11,6 +12,8 @@ interface StepEditorItemProps {
   onCodeChange: (code: string) => void;
   onRemove: () => void;
   canRemove: boolean;
+  language: string;
+  theme: ShikiThemeChoice;
 }
 
 export function StepEditorItem({
@@ -19,6 +22,8 @@ export function StepEditorItem({
   onCodeChange,
   onRemove,
   canRemove,
+  language,
+  theme,
 }: StepEditorItemProps) {
   return (
     <div className="group relative">
@@ -39,17 +44,19 @@ export function StepEditorItem({
         )}
       </div>
 
-      {/* Simplified Step Card/Textarea */}
+      {/* Code Editor */}
       <div className="relative">
-        <Textarea
-          className="min-h-[250px] font-mono text-sm leading-relaxed p-4 resize-y bg-background focus-visible:ring-primary/20"
+        <CodeEditor
+          language={language}
+          theme={theme}
           value={code}
-          onChange={(e) => onCodeChange(e.target.value)}
-          spellCheck={false}
+          onChange={onCodeChange}
           placeholder={`// Enter code for step ${index + 1}...`}
+          className="bg-background"
         />
       </div>
     </div>
   );
 }
+
 

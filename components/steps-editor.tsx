@@ -69,6 +69,8 @@ export function StepsEditor({
               onCodeChange={(code) => onUpdateStep(index, code)}
               onRemove={() => onRemoveStep(index)}
               canRemove={steps.length > 1}
+              language={selectedLang}
+              theme={theme}
             />
           ))}
 
