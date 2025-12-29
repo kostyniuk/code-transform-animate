@@ -1,6 +1,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResizablePanel } from "@/components/ui/resizable";
@@ -54,6 +55,20 @@ export function StepsEditor({
   onRemoveStep,
   onUpdateStep,
 }: StepsEditorProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      const scrollContainer = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: "smooth"
+        });
+      }
+    }
+  }, [steps.length]);
+
   return (
     <ResizablePanel defaultSize={60} minSize={35} className="flex flex-col h-full bg-muted/10 overflow-hidden">
       <StepsEditorHeader
@@ -77,8 +92,11 @@ export function StepsEditor({
         onAddStep={onAddStep}
       />
 
-      <ScrollArea className="flex-1 w-full min-h-0">
-        <div className="p-4 space-y-6 max-w-4xl mx-auto pb-10">
+      <ScrollArea
+        ref={scrollRef}
+        className="flex-1 w-full min-h-0"
+      >
+        <div className="p-4 space-y-6 max-w-4xl mx-auto w-full pb-10">
           {steps.map((step, index) => (
             <StepEditorItem
               key={index}
