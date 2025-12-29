@@ -97,7 +97,7 @@ export function StepsEditorHeader({
               <Settings2 className="w-4 h-4" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80 p-4">
+          <PopoverContent className="w-72 p-4 mt-1">
             <SettingsPopover
               showLineNumbers={showLineNumbers}
               onShowLineNumbersChange={onShowLineNumbersChange}
@@ -115,7 +115,7 @@ export function StepsEditorHeader({
           </PopoverContent>
         </Popover>
 
-        <Button onClick={onAddStep} size="sm" className="h-7 gap-1" variant="secondary">
+        <Button onClick={onAddStep} size="sm" className="h-7 gap-1" variant="default">
           <Plus className="w-3.5 h-3.5" /> New Step
         </Button>
       </div>
