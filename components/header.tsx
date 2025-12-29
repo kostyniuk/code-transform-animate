@@ -11,7 +11,7 @@ export async function Header() {
           width={24}
           height={24}
         />
-        <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <h1 className="text-lg font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
           Mellow Lines
         </h1>
       </div>
