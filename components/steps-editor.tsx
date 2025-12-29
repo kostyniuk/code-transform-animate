@@ -55,7 +55,7 @@ export function StepsEditor({
   onUpdateStep,
 }: StepsEditorProps) {
   return (
-    <ResizablePanel defaultSize={50} minSize={30} className="flex flex-col h-full bg-muted/10 overflow-hidden">
+    <ResizablePanel defaultSize={60} minSize={35} className="flex flex-col h-full bg-muted/10 overflow-hidden">
       <StepsEditorHeader
         stepCount={steps.length}
         selectedLang={selectedLang}

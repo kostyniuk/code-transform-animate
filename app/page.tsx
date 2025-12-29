@@ -406,7 +406,7 @@ export default function Home() {
           onUpdateStep={updateSimpleStep}
         />
 
-        <ResizableHandle withHandle />
+        <ResizableHandle />
 
         <PreviewPanel
           canvasRef={canvasRef}
