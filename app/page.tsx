@@ -282,7 +282,7 @@ export default function Home() {
     };
   }, [downloadUrl]);
 
-  const canExport = !!canvasRef.current && !!stepLayouts && stepLayouts.length > 0;
+  const canExport = !!stepLayouts && stepLayouts.length > 0;
 
   // Simple mode handlers
   const addSimpleStep = () => {
