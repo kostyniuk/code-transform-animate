@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,6 +17,13 @@ export function CanvasPreview({
   onDismissError,
   isLoading
 }: CanvasPreviewProps) {
+  const hasShownRef = useRef(false);
+  const shouldAnimate = !isLoading && !hasShownRef.current;
+
+  if (!isLoading) {
+    hasShownRef.current = true;
+  }
+
   return (
     <div className="flex-1 relative min-h-0 flex flex-col">
       {layoutError && (
@@ -29,7 +37,7 @@ export function CanvasPreview({
 
       <div className="flex-1 overflow-auto flex items-center justify-center p-8 bg-[url('/grid-pattern.svg')] dark:bg-[url('/grid-pattern-dark.svg')] bg-center">
         {!isLoading && (
-          <div className="relative shadow-2xl rounded-lg overflow-hidden ring-1 ring-black/5 dark:ring-white/10 bg-zinc-950 max-w-full opacity-0 animate-[fadeIn_0.3s_ease-in-out_forwards]">
+          <div className={`relative shadow-2xl rounded-lg overflow-hidden ring-1 ring-black/5 dark:ring-white/10 bg-zinc-950 max-w-full ${shouldAnimate ? 'opacity-0 animate-[fadeIn_0.3s_ease-in-out_forwards]' : 'opacity-100'}`}>
             <canvas
               ref={canvasRef}
               className="block max-w-full h-auto"
