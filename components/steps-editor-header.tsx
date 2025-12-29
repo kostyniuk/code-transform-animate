@@ -15,7 +15,7 @@ import {
 import { AVAILABLE_LANGUAGES, AVAILABLE_THEMES, type ShikiThemeChoice } from "@/app/lib/magicMove/shikiHighlighter";
 import { SettingsPopover } from "./settings-popover";
 import { Badge } from "@/components/ui/badge";
-import { FieldDescription, FieldLabel } from "./ui/field";
+import { FieldLabel } from "./ui/field";
 
 interface StepsEditorHeaderProps {
   stepCount: number;

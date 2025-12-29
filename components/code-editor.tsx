@@ -28,7 +28,7 @@ export function CodeEditor({
     theme,
     className,
     placeholder,
-    maxHeight = 360,
+    maxHeight = 320,
     maxLines,
 }: CodeEditorProps) {
     const [lines, setLines] = useState<TokenLine[] | null>(null);

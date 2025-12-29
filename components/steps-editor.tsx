@@ -96,7 +96,7 @@ export function StepsEditor({
         ref={scrollRef}
         className="flex-1 w-full min-h-0"
       >
-        <div className="p-4 space-y-6 max-w-4xl mx-auto w-full pb-10">
+        <div className="p-4 space-y-6 max-w-4xl mx-auto w-full pb-8">
           {steps.map((step, index) => (
             <StepEditorItem
               key={index}
@@ -110,7 +110,7 @@ export function StepsEditor({
             />
           ))}
 
-          <Button variant="outline" className="w-full border-dashed text-muted-foreground" onClick={onAddStep}>
+          <Button variant="outline" className="border-dashed text-muted-foreground" onClick={onAddStep}>
             <Plus className="w-4 h-4 mr-2" /> Add another step
           </Button>
         </div>
