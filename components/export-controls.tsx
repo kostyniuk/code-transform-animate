@@ -5,13 +5,7 @@ import { Download, Film } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 interface ExportControlsProps {
@@ -50,29 +44,31 @@ export function ExportControls({
           <span className="font-medium">{stepCount}</span> steps · <span className="font-medium">{(totalMs / 1000).toFixed(1)}s</span> duration
         </div>
 
-        <div className="flex items-center gap-3">
-          <Label className="text-xs whitespace-nowrap">Transition: {transitionMs}ms</Label>
+        <div className="flex items-center gap-2">
+          <Label className="text-xs whitespace-nowrap">Transition: {(transitionMs / 1000).toFixed(1)}s</Label>
           <Slider
             value={[transitionMs]}
             min={100}
             max={5000}
             step={100}
             onValueChange={([v]) => onTransitionMsChange(v)}
-            className="w-[200px]"
+            className="w-40"
           />
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <Select value={format} onValueChange={(v) => setFormat(v as "webm" | "mp4")}>
-          <SelectTrigger className="w-[100px] h-8 text-xs">
-            <SelectValue placeholder="Format" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="webm">WebM</SelectItem>
-            <SelectItem value="mp4">MP4</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex items-center gap-2">
+        <Label className="text-xs whitespace-nowrap">Format:</Label>
+        <Tabs
+          value={format}
+          onValueChange={(v) => setFormat(v as "webm" | "mp4")}
+          className="w-fit"
+        >
+          <TabsList>
+            <TabsTrigger value="webm">WebM</TabsTrigger>
+            <TabsTrigger value="mp4">MP4</TabsTrigger>
+          </TabsList>
+        </Tabs>
 
         {downloadUrl && (
           <Button variant="outline" size="sm" asChild className="gap-2">
@@ -84,7 +80,7 @@ export function ExportControls({
         )}
         <Button
           size="sm"
-          className={cn("gap-2 min-w-[120px]", isExporting && "opacity-80")}
+          className={cn("min-w-[100px]", isExporting && "opacity-80")}
           onClick={() => onExport(format)}
           disabled={!canExport || isExporting}
         >
