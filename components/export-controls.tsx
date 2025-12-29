@@ -35,7 +35,7 @@ export function ExportControls({
 }: ExportControlsProps) {
   const [format, setFormat] = useState<"webm" | "mp4">("webm");
 
-  const statusText = exportPhase === "saving" ? "Saving" : "Preparing";
+  const statusText = exportPhase === "saving" ? "Preparing" : "Recording";
 
   return (
     <div className="flex-none p-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 bg-muted/20 border-t">

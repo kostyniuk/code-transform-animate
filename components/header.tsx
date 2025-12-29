@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { ThemeToggle } from "./theme-toggle";
 
 export async function Header() {
 
   return (
-    <header className="flex-none h-14 border-b flex items-center justify-between px-4 bg-background z-20">
+    <header className="flex-none h-12 border-b flex items-center justify-between px-4 bg-background z-20">
       <div className="flex items-center gap-2">
         <Image
           src="/favicon.svg"
@@ -15,6 +16,7 @@ export async function Header() {
           Mellow Lines
         </h1>
       </div>
+      <ThemeToggle />
     </header>
   );
 }

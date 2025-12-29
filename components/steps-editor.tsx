@@ -96,7 +96,7 @@ export function StepsEditor({
         ref={scrollRef}
         className="flex-1 w-full min-h-0"
       >
-        <div className="p-4 space-y-6 max-w-4xl mx-auto w-full pb-8">
+        <div className="py-2 px-4 space-y-6 max-w-4xl mx-auto w-full pb-4">
           {steps.map((step, index) => (
             <StepEditorItem
               key={index}
