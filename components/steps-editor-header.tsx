@@ -2,9 +2,16 @@
 
 import { Layers, Plus, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 import { AVAILABLE_LANGUAGES, AVAILABLE_THEMES, type ShikiThemeChoice } from "@/app/lib/magicMove/shikiHighlighter";
 import { SettingsPopover } from "./settings-popover";
 
@@ -27,6 +34,14 @@ interface StepsEditorHeaderProps {
   endHoldMs: number;
   onEndHoldMsChange: (value: number) => void;
   onAddStep: () => void;
+}
+
+function formatName(name: string) {
+  return name
+    .split("-")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 export function StepsEditorHeader({
@@ -58,36 +73,41 @@ export function StepsEditorHeader({
       </div>
 
       <div className="flex items-center gap-2 flex-1 justify-end">
-        <Select value={selectedLang} onValueChange={onLangChange}>
-          <SelectTrigger className="h-8 w-[140px] text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {AVAILABLE_LANGUAGES.map((lang) => (
-              <SelectItem key={lang} value={lang}>
-                {lang.charAt(0).toUpperCase() + lang.slice(1)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Combobox
+          items={AVAILABLE_LANGUAGES}
+          value={selectedLang}
+          onValueChange={(v) => v && onLangChange(v as string)}
+          itemToStringLabel={(value) => formatName(value as string)}
+        >
+          <ComboboxInput placeholder="Select a language..." className="h-8 w-[140px] text-xs" />
+          <ComboboxContent>
+            <ComboboxEmpty>No items found.</ComboboxEmpty>
+            <ComboboxList>
+              {(item) => (
+                <ComboboxItem key={item} value={item}>
+                  {formatName(item)}
+                </ComboboxItem>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
 
-        <Select value={theme} onValueChange={(v) => onThemeChange(v as ShikiThemeChoice)}>
-          <SelectTrigger className="h-8 w-[140px] text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {AVAILABLE_THEMES.map((t) => (
-              <SelectItem key={t} value={t} className="text-xs">
-                {t === "github-light" ? "GitHub Light" :
-                  t === "github-dark" ? "GitHub Dark" :
-                    t === "nord" ? "Nord" :
-                      t === "one-dark-pro" ? "One Dark Pro" :
-                        t === "vitesse-dark" ? "Vitesse Dark" :
-                          t === "vitesse-light" ? "Vitesse Light" : t}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Combobox
+          value={theme}
+          onValueChange={(v) => v && onThemeChange(v as ShikiThemeChoice)}
+          itemToStringLabel={(value) => formatName(value as string)}
+        >
+          <ComboboxInput placeholder="Select theme..." className="h-8 w-[140px] text-xs" />
+          <ComboboxContent>
+            <ComboboxList>
+              {AVAILABLE_THEMES.map((t) => (
+                <ComboboxItem key={t} value={t} className="text-xs">
+                  {formatName(t)}
+                </ComboboxItem>
+              ))}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
 
         <Separator orientation="vertical" className="h-6" />
 
