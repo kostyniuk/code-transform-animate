@@ -7,6 +7,7 @@ export type ShikiThemeChoice =
   | "one-dark-pro"
   | "vitesse-dark"
   | "vitesse-light"
+  | "vesper"
 
 export const AVAILABLE_THEMES: readonly ShikiThemeChoice[] = [
   "github-light",
@@ -15,6 +16,7 @@ export const AVAILABLE_THEMES: readonly ShikiThemeChoice[] = [
   "one-dark-pro",
   "vitesse-dark",
   "vitesse-light",
+  "vesper"
 ] as const
 
 export const AVAILABLE_LANGUAGES = [
@@ -50,7 +52,7 @@ async function getHighlighterOnce() {
     highlighterPromise = (async () => {
       const shiki = await import("shiki")
       return await shiki.createHighlighter({
-        themes: ["github-light", "github-dark","nord","one-dark-pro", "vitesse-dark", "vitesse-light"],
+        themes: ["github-light", "github-dark","nord","one-dark-pro", "vitesse-dark", "vitesse-light", "vesper"],
         langs: [
           "javascript",
           "typescript",

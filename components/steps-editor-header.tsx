@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/combobox";
 import { AVAILABLE_LANGUAGES, AVAILABLE_THEMES, type ShikiThemeChoice } from "@/app/lib/magicMove/shikiHighlighter";
 import { SettingsPopover } from "./settings-popover";
+import { Badge } from "@/components/ui/badge";
+import { FieldDescription, FieldLabel } from "./ui/field";
 
 interface StepsEditorHeaderProps {
   stepCount: number;
@@ -68,8 +70,10 @@ export function StepsEditorHeader({
     <div className="flex-none flex items-center justify-between px-4 py-2 border-b bg-background/50 backdrop-blur-sm sticky top-0 z-10 gap-2">
       <div className="flex items-center gap-2">
         <Layers className="w-4 h-4 text-muted-foreground" />
-        <span className="font-semibold text-sm">Steps</span>
-        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{stepCount}</span>
+        <FieldLabel className="">Steps</FieldLabel>
+        <Badge variant="secondary" className="font-mono mt-0.5">
+          {stepCount}
+        </Badge>
       </div>
 
       <div className="flex items-center gap-2 flex-1 justify-end">
@@ -109,7 +113,7 @@ export function StepsEditorHeader({
           </ComboboxContent>
         </Combobox>
 
-        <Separator orientation="vertical" className="h-6" />
+        <Separator orientation="vertical" />
 
         <Popover>
           <PopoverTrigger asChild>
