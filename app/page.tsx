@@ -39,7 +39,7 @@ export default function Page() {
                                         Open Editor <ArrowRight className="ml-2 w-5 h-5" />
                                     </Button>
                                 </Link>
-                                <Link href="https://github.com" target="_blank">
+                                <Link href="https://github.com/kostyniuk/mellow-lines" target="_blank">
                                     <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full bg-background/40 backdrop-blur-md border border-border hover:bg-background/60 transition-transform hover:scale-105 hover:text-primary">
                                         Star on GitHub
                                     </Button>
