@@ -30,7 +30,7 @@ export default function Page() {
 
                             <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-xl leading-relaxed">
                                 Create stunning, cinematic code walkthroughs in seconds.
-                                The ultimate tool for developers, content creators and educators.
+                                The ultimate free and open source tool for developers, content creators and educators.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-start pt-4">
@@ -78,7 +78,7 @@ export default function Page() {
                         <FeatureCard
                             icon={<Layers className="w-5 h-5 text-primary" />}
                             title="Rich Theming"
-                            description="Select from a vast library of syntax themes and fonts to match your brand."
+                            description="Select from a vast library of syntax themes and languages to match your brand."
                         />
                         <FeatureCard
                             icon={<Play className="w-5 h-5 text-primary" />}
