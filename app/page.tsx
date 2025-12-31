@@ -8,13 +8,13 @@ import { GitHubIcon, TwitterIcon } from '@/components/ui/icons';
 
 export default function Page() {
     return (
-        <div className="relative w-full h-full flex flex-col">
+        <div className="relative w-full min-h-full flex flex-col">
             {/* Background Layer - Grid Pattern */}
             <div className="fixed inset-0 z-0 bg-background bg-[url('/grid-pattern.svg')] dark:bg-[url('/grid-pattern-dark.svg')] bg-center" />
 
             <div className="relative z-10 flex-1 flex flex-col min-h-0">
-                <div className="container mx-auto px-4 py-8 flex-1 flex flex-col">
-                    <div className="flex flex-col lg:flex-row gap-8 items-center flex-1">
+                <div className="container mx-auto px-4 py-8 flex flex-col">
+                    <div className="flex flex-col lg:flex-row gap-8 items-center">
                         {/* Hero Text - Left Column */}
                         <div className="text-left space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 flex-1">
                             <div className="flex justify-start">
