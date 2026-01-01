@@ -2,5 +2,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": true
   },
+  "oxc.fmt.experimental": true,
   "editor.defaultFormatter": "oxc.oxc-vscode"
 }
