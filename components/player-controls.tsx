@@ -32,7 +32,11 @@ export function PlayerControls({
         onClick={onPlayPause}
         disabled={disabled}
       >
-        {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
+        {isPlaying ? (
+          <Pause className="w-5 h-5 fill-current" />
+        ) : (
+          <Play className="w-5 h-5 fill-current ml-0.5" />
+        )}
       </Button>
 
       <div className="flex-1 flex flex-col gap-1.5">
@@ -66,4 +70,3 @@ export function PlayerControls({
     </div>
   );
 }
-

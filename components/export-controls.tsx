@@ -41,11 +41,14 @@ export function ExportControls({
     <div className="flex-none p-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 bg-muted/20 border-t">
       <div className="flex items-center gap-4">
         <div className="text-xs text-muted-foreground">
-          <span className="font-medium">{stepCount}</span> steps · <span className="font-medium">{(totalMs / 1000).toFixed(1)}s</span> duration
+          <span className="font-medium">{stepCount}</span> steps ·{" "}
+          <span className="font-medium">{(totalMs / 1000).toFixed(1)}s</span> duration
         </div>
 
         <div className="flex items-center gap-2">
-          <Label className="text-xs whitespace-nowrap">Transition: {(transitionMs / 1000).toFixed(1)}s</Label>
+          <Label className="text-xs whitespace-nowrap">
+            Transition: {(transitionMs / 1000).toFixed(1)}s
+          </Label>
           <Slider
             value={[transitionMs]}
             min={100}
@@ -91,4 +94,3 @@ export function ExportControls({
     </div>
   );
 }
-

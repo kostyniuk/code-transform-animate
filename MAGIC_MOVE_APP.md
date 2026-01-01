@@ -33,14 +33,14 @@ Inspired by Slidev's "Shiki Magic Move" feature.
 ## What you can do
 
 - **Edit steps**: Add, remove, and edit code steps directly in textareas
-- **Configure settings**: 
+- **Configure settings**:
   - Choose programming language for syntax highlighting
   - Select theme (color scheme)
   - Toggle line numbers on/off
   - Set starting line number
   - Adjust transition duration (100-5000ms)
   - Set FPS for export (10-60)
-- **Preview animation**: 
+- **Preview animation**:
   - Play/Pause controls to start/stop playback
   - Scrub through timeline using the progress bar
   - Reset button to jump back to the beginning
@@ -85,6 +85,7 @@ The preview player allows you to scrub through the animation timeline and see ho
 ### Timeline Structure
 
 The timeline is calculated based on:
+
 - **Start hold**: 250ms pause before the first transition
 - **Transitions**: User-configurable duration (default 800ms, range 100-5000ms) for morphing between steps
 - **Between holds**: 120ms pause after each transition before the next one
@@ -175,6 +176,7 @@ The export process records the animation as a WebM video file that can be downlo
 ### Progress Tracking
 
 During export, the UI shows:
+
 - Progress percentage: `(elapsed / total) × 100`
 - Button text: "Processing X%" while exporting
 - Export button is disabled during recording
@@ -199,6 +201,7 @@ Recorder --> Download[DownloadLink_BlobURL]
 For a detailed breakdown of the exact sequence of file/function calls during the app's lifecycle, see **[EXECUTION_FLOW.md](./EXECUTION_FLOW.md)**.
 
 This document covers:
+
 - Initial setup and state initialization
 - Data transformation (SimpleStep → MagicMoveStep)
 - Tokenization and layout computation
@@ -213,6 +216,7 @@ This document covers:
 ### UI (app)
 
 #### `app/page.tsx`
+
 - **Role**: The whole MVP UI and orchestrator.
 - **Owns state**:
   - `simpleSteps`: array of code steps (simple mode)
@@ -242,6 +246,7 @@ This document covers:
 ### Types and data structures
 
 #### `app/lib/magicMove/types.ts`
+
 - **Role**: shared types used across render/export.
 - **Key types**:
   - `SimpleStep`: `{ code: string }` - user input format
@@ -254,10 +259,11 @@ The app uses a simple mode where users directly input code steps, and these are 
 ### Highlighting + layout + rendering
 
 #### `app/lib/magicMove/shikiHighlighter.ts`
+
 - **Role**: one-time Shiki initialization + per-step tokenization.
 - **Functions**:
   - `shikiTokenizeToLines({code, lang, theme})` → `{ lines, bg }`
-- **Themes**: 
+- **Themes**:
   - `github-light`, `github-dark`
   - `nord`
   - `one-dark-pro`
@@ -266,6 +272,7 @@ The app uses a simple mode where users directly input code steps, and these are 
 - **Fallback**: if tokenization fails (unknown lang), it re-tokenizes as `text`.
 
 #### `app/lib/magicMove/codeLayout.ts`
+
 - **Role**: compute where each token should be drawn on the canvas.
 - **Functions**:
   - `makeDefaultLayoutConfig()` returns default sizes (1920×1080 baseline, font, padding).
@@ -277,6 +284,7 @@ The app uses a simple mode where users directly input code steps, and these are 
   - Layout assumes a monospace font and uses `ctx.measureText("M")` for character width.
 
 #### `app/lib/magicMove/canvasRenderer.ts`
+
 - **Role**: draw a single frame (background “card”, gutter, tokens).
 - **Functions**:
   - `clearAndPaintBackground(...)`
@@ -287,6 +295,7 @@ The app uses a simple mode where users directly input code steps, and these are 
 ### Animation
 
 #### `app/lib/magicMove/animate.ts`
+
 - **Role**: compute animated token positions between two layouts.
 - **Function**:
   - `animateLayouts({ from, to, progress })` → `AnimatedToken[]`
@@ -297,6 +306,7 @@ The app uses a simple mode where users directly input code steps, and these are 
 ### Recording / export
 
 #### `app/lib/video/recordCanvas.ts`
+
 - **Role**: record a canvas into a `.webm` Blob.
 - **Function**:
   - `recordCanvasToWebm({ canvas, fps, durationMs, onProgress })` → `Blob`
@@ -365,5 +375,3 @@ The app uses a simple mode where users directly input code steps, and these are 
 - **Line numbers not showing**
   - Enable line numbers in the settings popover
   - Ensure the starting line number is set to 1 or higher
-
-

@@ -1,20 +1,28 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { animateLayouts } from "../lib/magicMove/animate"
-import { drawCodeFrame } from "../lib/magicMove/canvasRenderer"
-import { calculateCanvasHeight, layoutTokenLinesToCanvas, makeDefaultLayoutConfig } from "../lib/magicMove/codeLayout"
-import type { LayoutResult } from "../lib/magicMove/codeLayout"
-import { getThemeVariant, shikiTokenizeToLines, type ShikiThemeChoice } from "../lib/magicMove/shikiHighlighter"
-import type { MagicMoveStep, SimpleStep } from "../lib/magicMove/types"
-import { recordCanvasToWebm } from "../lib/video/recordCanvas"
-import { convertWebmToMp4, terminateFFmpeg } from "../lib/video/converter"
-import { DEFAULT_STEPS } from "../lib/constants"
+import { animateLayouts } from "../lib/magicMove/animate";
+import { drawCodeFrame } from "../lib/magicMove/canvasRenderer";
+import {
+  calculateCanvasHeight,
+  layoutTokenLinesToCanvas,
+  makeDefaultLayoutConfig,
+} from "../lib/magicMove/codeLayout";
+import type { LayoutResult } from "../lib/magicMove/codeLayout";
+import {
+  getThemeVariant,
+  shikiTokenizeToLines,
+  type ShikiThemeChoice,
+} from "../lib/magicMove/shikiHighlighter";
+import type { MagicMoveStep, SimpleStep } from "../lib/magicMove/types";
+import { recordCanvasToWebm } from "../lib/video/recordCanvas";
+import { convertWebmToMp4, terminateFFmpeg } from "../lib/video/converter";
+import { DEFAULT_STEPS } from "../lib/constants";
 
-import { ResizableHandle, ResizablePanelGroup } from "@/components/ui/resizable"
-import { StepsEditor } from "@/components/steps-editor"
-import { PreviewPanel } from "@/components/preview-panel"
+import { ResizableHandle, ResizablePanelGroup } from "@/components/ui/resizable";
+import { StepsEditor } from "@/components/steps-editor";
+import { PreviewPanel } from "@/components/preview-panel";
 
 type StepLayout = {
   layout: LayoutResult;
@@ -24,7 +32,6 @@ type StepLayout = {
 };
 
 export default function Home() {
-
   const [simpleSteps, setSimpleSteps] = useState<SimpleStep[]>(DEFAULT_STEPS);
   const [selectedLang, setSelectedLang] = useState<string>("typescript");
   const [simpleShowLineNumbers, setSimpleShowLineNumbers] = useState<boolean>(true);
@@ -239,7 +246,7 @@ export default function Home() {
         lineCount: last.tokenLineCount,
       });
     },
-    [stepLayouts, theme, timeline, transitionMs]
+    [stepLayouts, theme, timeline, transitionMs],
   );
 
   useEffect(() => {
@@ -303,8 +310,6 @@ export default function Home() {
     setSimpleSteps(updated);
   };
 
-
-
   // ... existing imports
 
   const onExport = async (format: "webm" | "mp4") => {
@@ -357,9 +362,13 @@ export default function Home() {
         setExportPhase("saving");
         setExportProgress(0);
 
-        const mp4Blob = await convertWebmToMp4(blob!, (val) => {
-          setExportProgress(val);
-        }, durationMs);
+        const mp4Blob = await convertWebmToMp4(
+          blob!,
+          (val) => {
+            setExportProgress(val);
+          },
+          durationMs,
+        );
         cancelled = true;
 
         const url = URL.createObjectURL(mp4Blob);
@@ -371,7 +380,6 @@ export default function Home() {
       }
 
       blob = null; // Release WebM blob memory
-
     } catch (e) {
       cancelled = true;
       setLayoutError(e instanceof Error ? e.message : "Export failed");

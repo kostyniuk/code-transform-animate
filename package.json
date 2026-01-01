@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
@@ -41,8 +42,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.1",
+    "oxfmt": "^0.21.0",
+    "oxlint": "^1.36.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

@@ -21,7 +21,7 @@ export function AuthButton() {
       {isLoading ? 'Connecting...' : isLoggedIn ? 'Logout' : 'Login'}
     </button>
   );
-}`
+}`,
   },
   {
     code: `// Step 2: Encapsulated Reducer Logic
@@ -53,8 +53,6 @@ export function AuthButton() {
        state.status === 'authenticated' ? 'Logout' : 'Login'}
     </button>
   );
-}`
-  }
+}`,
+  },
 ];
-
-

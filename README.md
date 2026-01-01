@@ -2,9 +2,7 @@
 
 Code animation studio built with Next.js that transforms your code snippets into beautiful, smooth transition animations. Perfect for creating high-quality videos of code refactorings, feature implementations, or explaining complex logic.
 
-
 https://github.com/user-attachments/assets/f4eb0bcc-e554-4add-8065-061e980e57b7
-
 
 ## ✨ Features
 
@@ -45,6 +43,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## 📖 Learn More
 
 To learn more about the internals of the animation engine, check out:
+
 - `app/lib/magicMove/`: The core logic for token selection and layout animation.
 - `app/lib/video/`: Video recording and FFmpeg conversion logic.
-

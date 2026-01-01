@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Mellow Lines',
+  title: "Mellow Lines",
   icons: {
-    icon: '/favicon.svg',
+    icon: "/favicon.svg",
   },
-}
+};
 
 export default function RootLayout({
   children,

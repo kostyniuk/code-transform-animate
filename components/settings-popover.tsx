@@ -8,7 +8,14 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Field, FieldLabel, FieldGroup, FieldLegend, FieldSet, FieldDescription } from "@/components/ui/field";
+import {
+  Field,
+  FieldLabel,
+  FieldGroup,
+  FieldLegend,
+  FieldSet,
+  FieldDescription,
+} from "@/components/ui/field";
 import { MinusIcon, PlusIcon } from "lucide-react";
 
 interface SettingsPopoverProps {
@@ -176,7 +183,6 @@ export function SettingsPopover({
           </FieldGroup>
         </FieldSet>
       </FieldGroup>
-    </div >
+    </div>
   );
 }
-

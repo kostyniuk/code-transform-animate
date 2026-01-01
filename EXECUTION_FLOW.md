@@ -5,6 +5,7 @@ This document details the exact sequence of file/function calls that happen duri
 ## Architecture Overview
 
 The app uses a component-based architecture:
+
 - **Main page** (`app/page.tsx`): Contains all business logic, state management, and rendering orchestration
 - **UI components** (`components/`): Presentational components that receive props and emit callbacks
 - **Core libraries** (`app/lib/magicMove/`, `app/lib/video/`): Rendering, animation, and export logic
@@ -12,6 +13,7 @@ The app uses a component-based architecture:
 ## Data Flow
 
 The app transforms user input (code steps) into an animated video through several phases:
+
 1. State initialization
 2. Data transformation (SimpleStep → MagicMoveStep)
 3. Tokenization and layout computation
@@ -40,6 +42,7 @@ The UI is decomposed into presentational components that receive props and call 
   - **`export-controls.tsx`**: Export controls (timeline info, transition slider, export/download buttons)
 
 **Component Communication Pattern**:
+
 - Components receive state as props
 - Components call callback functions (e.g., `onAddStep`, `onPlayPause`, `onExport`) to trigger actions
 - All business logic remains in `app/page.tsx`
@@ -47,6 +50,7 @@ The UI is decomposed into presentational components that receive props and call 
 ### Core Logic (`app/page.tsx`)
 
 The main page component manages:
+
 - **State management**: All React state (steps, playback, export, UI state)
 - **Layout computation**: Tokenization and positioning via `useEffect` hooks
 - **Frame rendering**: `renderAt()` function that orchestrates canvas drawing
@@ -61,6 +65,7 @@ The main page component manages:
 **File**: `app/page.tsx`
 
 When the component mounts:
+
 1. **State initialization**:
    - `simpleSteps`: initialized with `DEFAULT_STEPS` from `app/lib/constants.ts`
    - `selectedLang`: defaults to `"typescript"`
@@ -86,6 +91,7 @@ When the component mounts:
 **Trigger**: Whenever `simpleSteps`, `selectedLang`, `simpleShowLineNumbers`, or `simpleStartLine` changes
 
 **Function**: `useMemo` hook
+
 ```typescript
 const steps = useMemo<MagicMoveStep[]>(() => {
   return simpleSteps.map((step) => ({
@@ -114,10 +120,12 @@ const steps = useMemo<MagicMoveStep[]>(() => {
 **Step-by-step execution**:
 
 #### 3.1. Initialize canvas for measurement
+
 ```typescript
 const c = document.createElement("canvas");
 const ctx = c.getContext("2d");
 ```
+
 - **Responsibility**: Creates an off-screen canvas for text measurement
 - **Why**: Needed to calculate accurate token widths using `ctx.measureText()`
 
@@ -126,6 +134,7 @@ const ctx = c.getContext("2d");
 **File**: `app/lib/magicMove/shikiHighlighter.ts`
 
 **Function**: `shikiTokenizeToLines({ code, lang, theme })`
+
 ```typescript
 const { lines, bg } = await shikiTokenizeToLines({
   code: step.code,
@@ -135,6 +144,7 @@ const { lines, bg } = await shikiTokenizeToLines({
 ```
 
 **Internal execution** (in `shikiHighlighter.ts`):
+
 - **Line 39-43**: Initializes Shiki highlighter (lazy, first call only):
   - Loads languages: `js`, `ts`, `tsx`, `jsx`, `json`, `sql`, `css`, `html`, `md`, `bash`, `shell`
   - Loads themes: `github-light`, `github-dark`, `nord`, `one-dark-pro`, `vitesse-dark`, `vitesse-light`
@@ -146,7 +156,8 @@ const { lines, bg } = await shikiTokenizeToLines({
   - Each token has: `text`, `color` (hex), `fontStyle` (optional)
 - **Line 87-100**: Extracts background color from theme
 
-**Returns**: 
+**Returns**:
+
 - `lines`: `TokenizedToken[][]` - array of lines, each line is array of tokens
 - `bg`: `string` - background color hex
 
@@ -155,6 +166,7 @@ const { lines, bg } = await shikiTokenizeToLines({
 **File**: `app/lib/magicMove/codeLayout.ts`
 
 **Function**: `makeDefaultLayoutConfig()`
+
 ```typescript
 const cfg = makeDefaultLayoutConfig();
 cfg.showLineNumbers = step.meta.lines;
@@ -162,6 +174,7 @@ cfg.startLine = step.meta.startLine;
 ```
 
 **Returns** (lines 16-32):
+
 ```typescript
 {
   canvasWidth: 1920,
@@ -185,6 +198,7 @@ cfg.startLine = step.meta.startLine;
 **File**: `app/lib/magicMove/codeLayout.ts`
 
 **Function**: `layoutTokenLinesToCanvas({ ctx, tokenLines, bg, theme, config })`
+
 ```typescript
 const layout = layoutTokenLinesToCanvas({
   ctx,
@@ -198,6 +212,7 @@ const layout = layoutTokenLinesToCanvas({
 **Internal execution** (in `codeLayout.ts`, lines 48-145):
 
 1. **Line 51-57**: Measure character width using monospace "M":
+
    ```typescript
    ctx.font = `${config.fontSize}px ${config.fontFamily}`;
    const charWidth = ctx.measureText("M").width;
@@ -209,6 +224,7 @@ const layout = layoutTokenLinesToCanvas({
    - Adds margin: `gutterWidth = lineNumberWidth + gutterMargin`
 
 3. **Line 72**: Calculate text starting X position:
+
    ```typescript
    const textX = config.paddingX + gutterWidth;
    ```
@@ -235,6 +251,7 @@ const layout = layoutTokenLinesToCanvas({
    - Uses theme variant to set line number color and background gradient
 
 **Returns** `LayoutResult` (lines 118-143):
+
 ```typescript
 {
   bg: "#hexcolor",
@@ -248,6 +265,7 @@ const layout = layoutTokenLinesToCanvas({
 #### 3.5. Store layout result
 
 **File**: `app/page.tsx`
+
 ```typescript
 nextLayouts.push({
   layout,
@@ -258,11 +276,13 @@ nextLayouts.push({
 ```
 
 After all steps are processed:
+
 ```typescript
 setStepLayouts(nextLayouts);
 ```
 
-**Responsibility**: 
+**Responsibility**:
+
 - Stores computed layouts in state, triggering re-render
 - Updated `stepLayouts` state is passed to `<PreviewPanel />` as a prop
 - When `stepLayouts` changes, `<CanvasPreview />` receives the updated canvas ref and re-renders
@@ -273,11 +293,13 @@ setStepLayouts(nextLayouts);
 
 **File**: `app/page.tsx`
 
-**Trigger**: 
+**Trigger**:
+
 - Whenever `steps.length` changes (user adds/removes steps via `<StepsEditor />`)
 - Whenever `transitionMs` changes (user adjusts transition slider in `<ExportControls />`)
 
 **Function**: `useMemo` hook
+
 ```typescript
 const timeline = useMemo(() => {
   const stepCount = steps.length;
@@ -301,7 +323,8 @@ const timeline = useMemo(() => {
 
 **Function**: `renderAt(ms: number)`
 
-**Trigger**: 
+**Trigger**:
+
 - When `playheadMs` changes (via `useEffect` hook)
   - User seeks via `<PlayerControls />` progress bar
   - User clicks play/pause button in `<PlayerControls />`
@@ -312,6 +335,7 @@ const timeline = useMemo(() => {
 **Step-by-step execution**:
 
 #### 5.1. Setup canvas dimensions
+
 ```typescript
 canvas.width = cfg.canvasWidth;  // 1920
 const maxLineCount = Math.max(...stepLayouts.map(s => s.tokenLineCount));
@@ -328,12 +352,14 @@ cfg.canvasHeight = canvas.height;
 **File**: `app/lib/magicMove/codeLayout.ts`
 
 **Function**: `calculateCanvasHeight()` (lines 34-46)
+
 - Calculates height to fit all lines plus one blank line at bottom
 - Enforces minimum height of 1080px (Full HD)
 
 #### 5.2. Determine which step/transition to render
 
 **Logic flow**:
+
 1. **Single step** (lines 179-190): Render the only step statically
 2. **Before first transition** (lines 194-206): Render first step statically
 3. **During transitions** (lines 209-227):
@@ -376,6 +402,7 @@ cfg.canvasHeight = canvas.height;
 #### 5.3b. Animated rendering (during transitions)
 
 **File**: `app/page.tsx`
+
 ```typescript
 const progress = transitionMs <= 0 ? 1 : t / transitionMs;
 const animated = animateLayouts({ from: a.layout, to: b.layout, progress });
@@ -432,6 +459,7 @@ drawCodeFrame({
 **Returns**: `AnimatedToken[]` - same as `PositionedToken` but with `opacity: number`
 
 **Back to `canvasRenderer.ts`**: `drawCodeFrame()` with `tokens` parameter
+
 - **Lines 79-96**: Draws animated tokens with opacity
   - Sets global alpha: `ctx.globalAlpha = token.opacity`
   - Draws text at interpolated positions
@@ -443,7 +471,8 @@ drawCodeFrame({
 
 **File**: `app/page.tsx`
 
-**Trigger**: 
+**Trigger**:
+
 - When `isPlaying` changes to `true` (user clicks play button in `<PlayerControls />`)
 - When `isPlaying` changes to `false` (user clicks pause button in `<PlayerControls />`)
 
@@ -452,6 +481,7 @@ drawCodeFrame({
 **Step-by-step execution**:
 
 1. **Define tick function**:
+
    ```typescript
    const tick = (now: number) => {
      const last = lastFrameRef.current ?? now;
@@ -466,6 +496,7 @@ drawCodeFrame({
    ```
 
 2. **Start loop**:
+
    ```typescript
    rafRef.current = requestAnimationFrame(tick);
    ```
@@ -487,13 +518,15 @@ drawCodeFrame({
 
 **Function**: `onExport()` (async)
 
-**Trigger**: 
+**Trigger**:
+
 - User clicks "Export" button in `<ExportControls />`
 - Button is disabled if `canExport` is false (no canvas ref or no step layouts)
 
 **Step-by-step execution**:
 
 #### 7.1. Setup
+
 ```typescript
 setIsExporting(true);
 setExportProgress(0);
@@ -514,6 +547,7 @@ canvas.height = exportHeight;
 ```
 
 #### 7.2. Create render loop
+
 ```typescript
 const durationMs = timeline.totalMs;
 const start = performance.now();
@@ -541,36 +575,42 @@ requestAnimationFrame(renderLoop);
 **Internal execution** (in `recordCanvas.ts`, lines 20-77):
 
 1. **Lines 22-23**: Create media stream
+
    ```typescript
    const stream = canvas.captureStream(fps);
    ```
+
    - **Responsibility**: Captures canvas frames at specified FPS
 
 2. **Lines 25-45**: Select codec and create recorder
+
    ```typescript
    const pickMimeType = () => {
      if (isSupported("video/webm;codecs=vp9")) return "video/webm;codecs=vp9";
      if (isSupported("video/webm;codecs=vp8")) return "video/webm;codecs=vp8";
      return "video/webm";
    };
-   
+
    const mimeType = pickMimeType();
    const bitrate = mimeType.includes("vp9") ? 10_000_000 : 8_000_000;
-   
+
    const recorder = new MediaRecorder(stream, {
      mimeType,
      videoBitsPerSecond: bitrate,
    });
    ```
+
    - **Responsibility**: Selects best available codec with appropriate bitrate for quality
 
 3. **Lines 47-49**: Setup data collection
+
    ```typescript
    const chunks: Blob[] = [];
    recorder.ondataavailable = (event) => chunks.push(event.data);
    ```
 
 4. **Lines 51-62**: Track progress
+
    ```typescript
    const progressStart = performance.now();
    const progressLoop = () => {
@@ -584,9 +624,10 @@ requestAnimationFrame(renderLoop);
    ```
 
 5. **Lines 64-73**: Wait for recording completion
+
    ```typescript
    recorder.start(250);  // Chunk interval: 250ms
-   
+
    await new Promise<void>((resolve) => {
      setTimeout(() => {
        recorder.stop();
@@ -602,6 +643,7 @@ requestAnimationFrame(renderLoop);
    ```
 
 #### 7.4. Cleanup and download
+
 ```typescript
 const blob = await recordCanvasToWebm(...);
 cancelled = true;  // Stop render loop
@@ -615,7 +657,8 @@ setPlayheadMs(0);
 renderAt(0);  // Reset to first frame
 ```
 
-**Responsibility**: 
+**Responsibility**:
+
 - Creates download URL and stores in `downloadUrl` state
 - Resets UI state (exporting flag, progress, playhead)
 - `downloadUrl` state change triggers re-render of `<ExportControls />`
@@ -629,6 +672,7 @@ renderAt(0);  // Reset to first frame
 **Trigger**: When `downloadUrl` state is set (from step 7.4)
 
 **Component rendering**:
+
 ```typescript
 {downloadUrl && (
   <Button variant="outline" size="sm" asChild className="gap-2">
@@ -640,7 +684,8 @@ renderAt(0);  // Reset to first frame
 )}
 ```
 
-**Responsibility**: 
+**Responsibility**:
+
 - `<ExportControls />` receives `downloadUrl` as prop
 - When `downloadUrl` is truthy, renders a download button
 - Provides download link using the blob URL created in step 7.4
@@ -715,5 +760,3 @@ This section describes how user interactions flow through the component hierarch
 3. **User clicks download button in `<ExportControls />`**
    - Browser downloads the blob URL
    - No callback needed (native browser behavior)
-
-

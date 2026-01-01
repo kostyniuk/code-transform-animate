@@ -59,18 +59,22 @@ export function StepsEditor({
 
   useEffect(() => {
     if (scrollRef.current) {
-      const scrollContainer = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      const scrollContainer = scrollRef.current.querySelector("[data-radix-scroll-area-viewport]");
       if (scrollContainer) {
         scrollContainer.scrollTo({
           top: scrollContainer.scrollHeight,
-          behavior: "smooth"
+          behavior: "smooth",
         });
       }
     }
   }, [steps.length]);
 
   return (
-    <ResizablePanel defaultSize={60} minSize={35} className="flex flex-col h-full bg-muted/10 overflow-hidden">
+    <ResizablePanel
+      defaultSize={60}
+      minSize={35}
+      className="flex flex-col h-full bg-muted/10 overflow-hidden"
+    >
       <StepsEditorHeader
         stepCount={steps.length}
         selectedLang={selectedLang}
@@ -92,10 +96,7 @@ export function StepsEditor({
         onAddStep={onAddStep}
       />
 
-      <ScrollArea
-        ref={scrollRef}
-        className="flex-1 w-full min-h-0"
-      >
+      <ScrollArea ref={scrollRef} className="flex-1 w-full min-h-0">
         <div className="py-2 px-4 space-y-6 max-w-4xl mx-auto w-full pb-4">
           {steps.map((step, index) => (
             <StepEditorItem
@@ -110,7 +111,11 @@ export function StepsEditor({
             />
           ))}
 
-          <Button variant="outline" className="border-dashed text-muted-foreground" onClick={onAddStep}>
+          <Button
+            variant="outline"
+            className="border-dashed text-muted-foreground"
+            onClick={onAddStep}
+          >
             <Plus className="w-4 h-4 mr-2" /> Add another step
           </Button>
         </div>
@@ -118,4 +123,3 @@ export function StepsEditor({
     </ResizablePanel>
   );
 }
-

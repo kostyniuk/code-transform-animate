@@ -12,7 +12,11 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox";
-import { AVAILABLE_LANGUAGES, AVAILABLE_THEMES, type ShikiThemeChoice } from "@/app/lib/magicMove/shikiHighlighter";
+import {
+  AVAILABLE_LANGUAGES,
+  AVAILABLE_THEMES,
+  type ShikiThemeChoice,
+} from "@/app/lib/magicMove/shikiHighlighter";
 import { SettingsPopover } from "./settings-popover";
 import { Badge } from "@/components/ui/badge";
 import { FieldLabel } from "./ui/field";
@@ -148,4 +152,3 @@ export function StepsEditorHeader({
     </div>
   );
 }
-

@@ -29,9 +29,7 @@ export function StepEditorItem({
     <div className="group relative">
       {/* Step Header */}
       <div className="flex items-center justify-between mb-2">
-        <Label className="text-xs font-mono text-muted-foreground">
-          Step {index + 1}
-        </Label>
+        <Label className="text-xs font-mono text-muted-foreground">Step {index + 1}</Label>
         {canRemove && (
           <Button
             variant="ghost"
