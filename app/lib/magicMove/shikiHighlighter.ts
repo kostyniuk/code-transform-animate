@@ -31,6 +31,7 @@ export const AVAILABLE_LANGUAGES = [
   "markdown",
   "bash",
   "shell",
+  "rust",
 ] as const;
 
 /**
@@ -73,6 +74,7 @@ async function getHighlighterOnce() {
           "markdown",
           "bash",
           "shell",
+          "rust",
         ],
       });
     })();
@@ -86,6 +88,7 @@ function normalizeLang(lang: string): string {
   if (l === "ts") return "typescript";
   if (l === "sh") return "shell";
   if (l === "md") return "markdown";
+  if (l === "rs") return "rust";
   return l || "text";
 }
 
